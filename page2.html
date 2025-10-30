@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback-Formular</title>
+    <style>
+        /* Einfaches, responsives Styling */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            background-color: #f5f5f5;
+        }
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Verhindert Überlappung */
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical; /* Nur vertikales Zoomen erlauben */
+        }
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #34495e;
+        }
+        /* Erfolg-Meldung (standardmäßig versteckt) */
+        .success-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            display: none; /* Wird per JS sichtbar, wenn gesendet */
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Dein Feedback ist wichtig!</h2>
+        
+        <!-- Feedback-Formular: sendet an DEINE E-Mail -->
+        <form id="feedbackForm" action="mailto:hanyicraft@gmail.com" method="post" enctype="text/plain">
+            <!-- Name-Feld -->
+            <div class="form-group">
+                <label for="name">Dein Name *</label>
+                <input type="text" id="name" name="Name" required placeholder="Gib deinen Namen ein">
+            </div>
+
+            <!-- E-Mail-Feld (damit du antworten kannst) -->
+            <div class="form-group">
+                <label for="email">Deine E-Mail *</label>
+                <input type="email" id="email" name="E-Mail" required placeholder="Gib deine E-Mail ein (z. B. max@beispiel.com)">
+            </div>
+
+            <!-- Feedback-Thema (optional, aber hilfreich) -->
+            <div class="form-group">
+                <label for="topic">Thema des Feedbacks</label>
+                <input type="text" id="topic" name="Thema" placeholder="z. B. Verbesserungsvorschlag, Lob">
+            </div>
+
+            <!-- Feedback-Nachricht -->
+            <div class="form-group">
+                <label for="message">Dein Feedback *</label>
+                <textarea id="message" name="Feedback-Nachricht" required placeholder="Erzähle uns, was du denkst..."></textarea>
+            </div>
+
+            <!-- Absenden-Button -->
+            <button type="submit">Feedback absenden</button>
+
+            <!-- Erfolg-Meldung -->
+            <div class="success-message" id="successMsg">
+                Danke für dein Feedback! Wir haben es erhalten und melden uns ggf. bei dir.
+            </div>
+        </form>
+    </div>
+
+    <!-- Optional: JavaScript für Erfolg-Meldung -->
+    <script>
+        const form = document.getElementById('feedbackForm');
+        const successMsg = document.getElementById('successMsg');
+
+        form.addEventListener('submit', function(e) {
+            // Verhindert, dass die Seite neu lädt (nur für die Meldung)
+            e.preventDefault();
+            
+            // Zeige die Erfolg-Meldung an
+            successMsg.style.display = 'block';
+            
+            // Optional: Setze das Formular zurück nach 3 Sekunden
+            setTimeout(() => {
+                form.reset();
+                successMsg.style.display = 'none';
+            }, 5000);
+
+            // Sende die E-Mail (nur wenn der Nutzer einen E-Mail-Client hat)
+            // Der originale "mailto"-Vorgang wird hier manuell ausgelöst
+            window.location.href = form.action + '?subject=Neues Feedback: ' + document.getElementById('topic').value;
+        });
+    </script>
+</body>
+</html>
